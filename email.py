@@ -12,6 +12,7 @@ class Email:
     
     def create_email(self, login: str = 'john.doe', domaine: str = '@gmail.com') -> str:
         """ Create a new email account """
+        # TODO: use rapid api for creating the email.
         if not login:
             login = self.generate_login()
         self.mail = u'{0}{1}{2}'.format(login, self.suffix, domaine)
