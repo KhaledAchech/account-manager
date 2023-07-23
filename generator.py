@@ -1,5 +1,5 @@
 import random
-from string import ascii_letters, digits, punctuation
+from string import ascii_letters
 
 def generate_email(domaine: str = '@gmail.com', length: int = 6) -> str:
     #generating random email address for quick use
