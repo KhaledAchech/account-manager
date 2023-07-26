@@ -1,7 +1,9 @@
 from getpass import getpass
 from time import sleep
+from os import system
 
 from colorama import init
+from colorist import Color
 from InquirerPy import get_style, inquirer
 from termcolor import cprint
 
@@ -24,7 +26,7 @@ def banner() -> None:
     """, 'blue')
 
 def loading(text: str = 'loading', delay: float = .5) -> None:
-    print(end=text)
+    print('\033[1;34;40m', end=text)
     n_dots = 0
 
     while True:
@@ -34,21 +36,24 @@ def loading(text: str = 'loading', delay: float = .5) -> None:
             print(end='\b\b\b', flush=True)
             n_dots = 0
         else:
-            print(end='.', flush=True)
+            print(end='\033[1;36;40m.', flush=True)
             n_dots += 1
         sleep(delay)
 
 def verify() -> bool:
-    pwd = getpass("Please enter the master password:")
+    cprint("Please enter the master password:", 'blue')
+    pwd = getpass('')
     # TO DO: add an assertation for authentication when we add the DB.
-    assert pwd == 'test'
+    while pwd != 'test':
+        cprint("That password isn't right. Please, re-enter your password:", 'red')
+        pwd = getpass('')
     return True
 
 def menu() -> None:
     if not verified:
         cprint('Unauthorized access!', 'red')
         exit(0)
-    style = get_style({"questionmark": "#ffffff", "answer": "#000000",  "pointer": "#61afef"}, style_override=False)
+    style = get_style({"questionmark": "#ffffff", "question": "#ffff00", "answer": "#008000", "pointer": "#61afef"}, style_override=False)
     actions = {"Check your accounts": 0, "Generate a temporairy email": 1, "Exit": 2}
     action = inquirer.select(
     message="Hello, How can I help you ?",
@@ -56,12 +61,12 @@ def menu() -> None:
     style=style
     ).execute()
     if actions[action] == 0:
-        cprint('We require re-authentication for this action', 'blue')
         verify()
-        cprint("Fetching your accounts: ", "blue")
+        cprint("Fetching your accounts: ", "green")
         loading()
     if actions[action] == 2:
         if inquirer.confirm(message="Confirm?", default=True).execute():
+            system('cls')
             exit(0)
         menu()
 
