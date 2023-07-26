@@ -1,11 +1,11 @@
 from getpass import getpass
-from time import sleep
 from os import system
+from time import sleep
 
 from colorama import init
-from colorist import Color
 from InquirerPy import get_style, inquirer
 from termcolor import cprint
+
 
 def banner() -> None:
     cprint(f"""
@@ -54,7 +54,6 @@ def menu() -> None:
         cprint('Unauthorized access!', 'red')
         exit(0)
     style = get_style({"questionmark": "#ffffff", "question": "#ffff00", "answer": "#008000", "pointer": "#61afef"}, style_override=False)
-    actions = {"Check your accounts": 0, "Generate a temporairy email": 1, "Exit": 2}
     action = inquirer.select(
     message="Hello, How can I help you ?",
     choices= actions.keys(),
@@ -64,7 +63,7 @@ def menu() -> None:
         verify()
         cprint("Fetching your accounts: ", "green")
         loading()
-    if actions[action] == 2:
+    if actions[action] == -1:
         if inquirer.confirm(message="Confirm?", default=True).execute():
             system('cls')
             exit(0)
@@ -74,4 +73,9 @@ if __name__ == "__main__":
     init()
     banner()
     verified:bool = verify()
+    actions = {
+        "Check your accounts": 0,
+        "Generate a temporairy email": 1,
+        "Exit": -1
+    }
     menu()
