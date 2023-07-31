@@ -3,6 +3,7 @@ from os import system
 from time import sleep
 
 from config import set_file_permissions, MESSAGES, THEME, INQUIRER
+from connector import database_connection, DB_INSTANT
 
 from colorama import init
 from InquirerPy import get_style, inquirer
@@ -45,7 +46,7 @@ def banner() -> None:
 def verify() -> bool:
     cprint(MESSAGES.get("ask_for_master_password"), THEME.get("default"))
     pwd = getpass('')
-    # TO DO: add an assertation for authentication when we add the DB.
+    # TO DO: add an assertation for authentication when we add the DB and code needs refactoring.
     while pwd != 'test':
         cprint(MESSAGES.get("incorrect_master_password"), THEME.get("error"))
         pwd = getpass('')
@@ -55,30 +56,37 @@ def menu() -> None:
     if not verified:
         cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
         exit(0)
+    
     style = get_style(INQUIRER.get("props"), style_override=INQUIRER.get("override"))
     action = inquirer.select(
-    message= MESSAGES.get("welcome_message"),
-    choices= actions.keys(),
-    style=style
+        message= MESSAGES.get("welcome_message"),
+        choices= actions.keys(),
+        style=style
     ).execute()
+    
     if actions[action] == 0:
         verify()
         cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
         # loading()
+    
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
             system('cls')
+            if DB_INSTANT is not None:
+                DB_INSTANT.close()
             exit(0)
         menu()
 
 if __name__ == "__main__":
     init()
-    set_file_permissions()
     banner()
+    set_file_permissions()
     verified:bool = verify()
+    database_connection()
     actions = {
         "Check your accounts": 0,
         "Generate a temporairy email": 1,
         "Exit": -1
     }
     menu()
+    DB_INSTANT.close()

@@ -1,6 +1,7 @@
 import platform
 import subprocess
 import json
+import configparser
 from os import system
 from termcolor import cprint
 
@@ -31,3 +32,15 @@ def set_file_permissions() -> None:
         cprint(f"Error setting file permissions: {e}", THEME.get("error"))
         system('cls')
         exit(0)
+
+def get_db_params() -> dict:
+    config = configparser.ConfigParser()
+    config.read(FILE_PATH)
+    return {
+        "host": config.get("Database", "host"),
+        "database": config.get("Database", "database"),
+        "default_database": config.get("Database", "default_database"),
+        "user": config.get("Database", "user"),
+        "password": config.get("Database", "password"),
+        "port": config.get("Database", "port")
+    }
