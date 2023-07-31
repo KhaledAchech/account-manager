@@ -1,0 +1,29 @@
+{
+    "files": {
+        "conifg_path": "config.ini"
+    },
+    "messages": {
+        "ask_for_master_password": "Please enter the master password:",
+        "incorrect_master_password": "That password isn't right. Please, re-enter your password:",
+        "unauthorized_access": "Unauthorized access!",
+        "welcome_message": "Hello, How can I help you ?",
+        "fetch_accounts": "Fetching your accounts: ",
+        "confirmation": "Confirm?"
+    },
+    "style": {
+        "theme": {
+            "default": "blue",
+            "error": "red",
+            "success": "green"
+        },
+        "inquirer": {
+            "props" : {
+                "questionmark": "#ffffff",
+                "question": "#ffff00",
+                "answer": "#008000",
+                "pointer": "#61afef"
+            },
+            "override": false
+        }
+    }
+}
