@@ -26,8 +26,8 @@ def set_file_permissions() -> None:
 
     try:
         subprocess.run(command, check=True)
-        cprint("File permissions set successfully.", "green")
+        cprint("File permissions set successfully.", THEME.get("success"))
     except subprocess.CalledProcessError as e:
-        cprint(f"Error setting file permissions: {e}", "red")
+        cprint(f"Error setting file permissions: {e}", THEME.get("error"))
         system('cls')
         exit(0)
