@@ -1,23 +1,34 @@
 import random
-import secrets
+import requests
 from string import ascii_letters, digits, punctuation
+from config import API, DOMAINES
 
 #TO be refactored
 
 chars = ascii_letters + digits + punctuation
     
     
-def create_temp_email(login: str = 'john.doe', domaine: str = '@gmail.com') -> str:
+def create_email(login: str = None, domain: str = None) -> str:
     """ Create a new email account """
-    # TODO: use this for reference
     if not login:
         login = generate_login()
-    mail = u'{0}{1}'.format(login, domaine)
+    if not domain:
+        domain = pick_domain()
+    mail = u'{0}@{1}'.format(login, domain)
     # TODO: Create validation tests
+    requests.get("{API}?login={login}&domain={domain}")
     return mail
 
-def generate_login(length: int = 6) -> str:
-    return ''.join(random.choice(ascii_letters) for i in range(length))
+def check_mail(mail: str) -> None:
+    # TODO: Create validation tests
+    login, domain = mail.split()
+    pass
 
-def generate_password(length: int = 8) -> str:
-    return ''.join(secrets.choice(chars) for i in range(length))
+def generate_login(length: int = 6) -> str:
+    return ''.join(random.choice(ascii_letters) for _ in range(length))
+
+def pick_domain() -> str:
+    return random.choice(DOMAINES)
+
+# def generate_password(length: int = 8) -> str:
+#     return ''.join(secrets.choice(chars) for _ in range(length))

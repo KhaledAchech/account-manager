@@ -25,5 +25,17 @@
             },
             "override": false
         }
+    },
+    "external_service": {
+        "API": "https://www.1secmail.com/api/v1/",
+        "domaines": [
+          "1secmail.com",
+          "1secmail.org",
+          "1secmail.net",
+          "wwjmp.com",
+          "esiix.com",
+          "xojxe.com",
+          "yoggm.com"
+        ]
     }
 }

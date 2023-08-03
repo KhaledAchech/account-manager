@@ -14,6 +14,8 @@ def get_constant_from_json(json_file: str = None, branch: str = None, key: str =
     return constants.get(branch).get(key)
 
 CONSTS_FILE = "constants.json"
+API = get_constant_from_json(CONSTS_FILE, "external_service", "API")
+DOMAINES = get_constant_from_json(CONSTS_FILE, "external_service", "domaines")
 FILE_PATH = get_constant_from_json(CONSTS_FILE, "files", "conifg_path")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
