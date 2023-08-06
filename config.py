@@ -2,6 +2,9 @@ import platform
 import subprocess
 import json
 import configparser
+
+from validation import assert_data, assert_str
+
 from os import system
 from termcolor import cprint
 
@@ -41,6 +44,13 @@ def read_config() -> object:
     config.read(FILE_PATH)
     return config
 
+def write_config(section: str, data: str = None) -> None:
+    ''' config.ini only holds string configuration data. '''
+    assert_str(section)
+    assert_str(data)
+    config = configparser.ConfigParser()
+    config.set("Other", data)
+
 def get_db_params() -> dict:
     config = read_config()
     return {
@@ -52,6 +62,7 @@ def get_db_params() -> dict:
         "port": config.get("Database", "port")
     }
 
-def get_master_password() -> str:
+def fetch_master_password() -> str:
     config = read_config()
-    return config.get("Other", "master_password")
+    mp = config.get("Other", "master_password")
+    return mp
