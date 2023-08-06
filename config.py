@@ -36,9 +36,13 @@ def set_file_permissions() -> None:
         system('cls')
         exit(0)
 
-def get_db_params() -> dict:
+def read_config() -> object:
     config = configparser.ConfigParser()
     config.read(FILE_PATH)
+    return config
+
+def get_db_params() -> dict:
+    config = read_config()
     return {
         "host": config.get("Database", "host"),
         "database": config.get("Database", "database"),
@@ -47,3 +51,7 @@ def get_db_params() -> dict:
         "password": config.get("Database", "password"),
         "port": config.get("Database", "port")
     }
+
+def get_master_password() -> str:
+    config = read_config()
+    return config.get("Other", "master_password")
