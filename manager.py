@@ -1,6 +1,7 @@
 from getpass import getpass
 from os import system
 from time import sleep
+import subprocess
 
 from config import set_file_permissions, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANT
@@ -12,19 +13,18 @@ from termcolor import cprint
 
 def banner() -> None:
     cprint(f"""
-        █████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███╗   ██╗████████╗ 
-        ██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝ 
-        ███████║██║     ██║     ██║   ██║██║   ██║██╔██╗ ██║   ██║    
-        ██╔══██║██║     ██║     ██║   ██║██║   ██║██║╚██╗██║   ██║    
-        ██║  ██║╚██████╗╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║   ██║    
-        ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝    
-                                                                    
-            ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗ 
-            ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗
-            ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝
-            ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██╔══██╗
-            ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║
-            ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
+        .|'''|                                      ||                        
+        ||                                    ''    ||                        
+        `|'''|, .|''|, .|'', '||  ||` '||''|  ||  ''||''  '||  ||`            
+         .   || ||..|| ||     ||  ||   ||     ||    ||     `|..||             
+         |...|' `|...  `|..'  `|..'|. .||.   .||.   `|..'      ||             
+                                                            ,  |'             
+                                                             ''               
+                 /.\                               ||                       ||    
+                // \\                  ''          ||                       ||    
+               //...\\    ('''' (''''  ||  ('''' ''||''   '''|.  `||''|,  ''||''  
+              //     \\    `'')  `'')  ||   `'')   ||    .|''||   ||  ||    ||    
+            .//       \\. `...' `...' .||. `...'   `|..' `|..||. .||  ||.   `|..' 
                                                                     
     """, THEME.get("default"))
 
@@ -67,7 +67,13 @@ def menu() -> None:
     if actions[action] == 0:
         verify()
         cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
+        subprocess.run(["python", "account_manager.py"])
         # loading()
+    
+    if actions[action] == 1:
+        verify()
+        subprocess.run(["python", "temp_email_manager.py"])
+        menu()
     
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
@@ -84,8 +90,8 @@ if __name__ == "__main__":
     verified:bool = verify()
     database_connection()
     actions = {
-        "Check your accounts": 0,
-        "Generate a temporairy email": 1,
+        "Manage your accounts": 0,
+        "Manage temporairy emails": 1,
         "Exit": -1
     }
     menu()
