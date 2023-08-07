@@ -29,6 +29,3 @@ def generate_login(length: int = 6) -> str:
 
 def pick_domain() -> str:
     return random.choice(DOMAINES)
-
-# def generate_password(length: int = 8) -> str:
-#     return ''.join(secrets.choice(chars) for _ in range(length))

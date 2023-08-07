@@ -24,6 +24,7 @@ FILE_PATH = get_constant_from_json(CONSTS_FILE, "files", "conifg_path")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
+VALIDATION = get_constant_from_json(CONSTS_FILE, "style", "validation")
 
 def set_file_permissions() -> None:
     if platform.system() == "Windows":

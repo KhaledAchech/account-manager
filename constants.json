@@ -25,6 +25,11 @@
                 "pointer": "#61afef"
             },
             "override": false
+        },
+        "validation": {
+            "info": "033[0;37;44m",
+            "warning": "033[0;30;43m",
+            "error": "033[0;30;41m"
         }
     },
     "external_service": {
