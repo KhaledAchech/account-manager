@@ -3,8 +3,6 @@ import subprocess
 import json
 import configparser
 
-from validation import assert_data, assert_str
-
 from os import system
 from termcolor import cprint
 
@@ -24,7 +22,6 @@ FILE_PATH = get_constant_from_json(CONSTS_FILE, "files", "conifg_path")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
-VALIDATION = get_constant_from_json(CONSTS_FILE, "style", "validation")
 
 def set_file_permissions() -> None:
     if platform.system() == "Windows":
@@ -47,10 +44,8 @@ def read_config() -> object:
 
 def write_config(section: str, data: str = None) -> None:
     ''' config.ini only holds string configuration data. '''
-    assert_str(section)
-    assert_str(data)
     config = configparser.ConfigParser()
-    config.set("Other", data)
+    config.set(section, data)
 
 def get_db_params() -> dict:
     config = read_config()
