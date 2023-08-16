@@ -3,6 +3,8 @@
         "conifg_path": "config.ini"
     },
     "messages": {
+        "register_master_passowrd": "Please register your master password",
+        "confirm_master_password_registration": "Please confirm the registrated master password",
         "ask_for_master_password": "Please enter the master password:",
         "incorrect_master_password": "That password isn't right. Please, re-enter your password:",
         "unauthorized_access": "Unauthorized access!",

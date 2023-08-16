@@ -5,6 +5,7 @@ import subprocess
 
 from config import set_file_permissions, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANT
+from security import agent
 
 from colorama import init
 from InquirerPy import get_style, inquirer
@@ -44,6 +45,11 @@ def banner() -> None:
 #         sleep(delay)
 
 def verify() -> bool:
+    if (not agent.check_master_password()):
+        cprint(MESSAGES.get("register_master_passowrd"), THEME.get("default"))
+        pwd = getpass('')
+        cprint(MESSAGES.get("confirm_master_password_registration"), THEME.get("default"))
+        confirm = getpass('')
     cprint(MESSAGES.get("ask_for_master_password"), THEME.get("default"))
     pwd = getpass('')
     # TO DO: add an assertation for authentication when we add the DB and code needs refactoring.
