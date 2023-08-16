@@ -56,6 +56,7 @@ def verify() -> bool:
         while confirm != pwd:
             cprint(MESSAGES.get("wrong_master_password_confirmation"), THEME.get("error"))
             confirm = getpass('')
+        agent.set_master_password(pwd)
     cprint(MESSAGES.get("ask_for_master_password"), THEME.get("default"))
     pwd = getpass('')
     # TO DO: add an assertation for authentication when we add the DB and code needs refactoring.

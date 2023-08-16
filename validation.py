@@ -47,13 +47,13 @@ def assert_str(string: str = None, has_int: bool = False, has_special_char: bool
     assert isinstance(string, str), ERROR + 'Invalid data type it should be a string!'
     
     if not (STR_REGEX.match(string)) and not(has_int) and not(has_special_char):
-        print(WARNING + f'Invalid string.')
+        print(WARNING + f'Invalid string: {string}.')
         return False
     if has_int and not(INT_REGEX.search(string)):
-        print(INFO + 'This input needs to have digits.')
+        print(INFO + f'This input needs to have digits: {string}.')
         return False
     if has_special_char and not(SPECIAL_CHARS_REGEX.search(string)):
-        print(INFO + 'This input needs to have special characters.')
+        print(INFO + f'This input needs to have special characters: {string}.')
         return False
     
     return True
@@ -71,5 +71,8 @@ def assert_password(password: str = None, min_length: str = 8) -> bool:
 def assert_menu_action(action: dict = None) -> None:
     assert_int(action)
     assert action in ACTIONS,  ERROR + 'Action N°={action} is uninedfined.'
+
+def assert_config(section: str, option: str, value: str) -> None:
+    assert assert_str(section) and assert_str(option, has_special_char=True) and assert_str(value, has_int=True), ERROR + 'Invalid configuration! Verify the section: {section}, the option: {option} and the value: {value}.'
 
 init(autoreset=True)

@@ -2,9 +2,12 @@ import platform
 import subprocess
 import json
 import configparser
+import base64
 
 from os import system
 from termcolor import cprint
+
+from validation import assert_config
 
 # TO DO: Need to handle corner cases and refactor code
 def get_constant_from_json(json_file: str = None, branch: str = None, key: str = None) -> str:
@@ -42,10 +45,18 @@ def read_config() -> object:
     config.read(FILE_PATH)
     return config
 
-def write_config(section: str, data: str = None) -> None:
+def write_config(section: str, option: str = None, value: str = None) -> None:
     ''' config.ini only holds string configuration data. '''
-    config = configparser.ConfigParser()
-    config.set(section, data)
+    assert_config(section, option, value)
+    
+    config = read_config()
+    if section not in config:
+        config.add_section(section)
+    
+    config.set(section, option, value)
+    
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
 
 def get_db_params() -> dict:
     config = read_config()
@@ -58,7 +69,7 @@ def get_db_params() -> dict:
         "port": config.get("Database", "port")
     }
 
-def fetch_master_password() -> str:
+def fetch_master_password() -> bytes:
     config = read_config()
     mp = config.get("Other", "master_password")
-    return mp
+    return base64.b64decode(mp)

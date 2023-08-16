@@ -21,7 +21,7 @@ def create_email(login: str = None, domain: str = None) -> str:
 
 def check_mail(mail: str) -> None:
     # TODO: Create validation tests
-    login, domain = mail.split()
+    login, domain = mail.split('@')
     pass
 
 def generate_login(length: int = 6) -> str:

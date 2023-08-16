@@ -1,7 +1,7 @@
 import bcrypt
+import base64
 
 from config import fetch_master_password, write_config
-from validation import assert_password
 
 class SecurityAgent(object):
     
@@ -15,9 +15,8 @@ class SecurityAgent(object):
         return not(not fetch_master_password())
 
     def set_master_password(self, password: str) -> None:
-        if not assert_password(password): return
         password = self.encrypt_password(password)
-        write_config("Other", password)
+        write_config("Other", "master_password", base64.b64encode(password).decode('utf-8'))
 
     def get_master_password(self) -> None:
         if not self.check_master_password():
@@ -30,7 +29,6 @@ class SecurityAgent(object):
         return bcrypt.hashpw(bytes, salt)
     
     def verify_master_password(self, given_password: str) -> bool:
-        if not assert_password(given_password): return False
         return bcrypt.checkpw(given_password, fetch_master_password())
 
     def check_lockout_state(self) -> None:
