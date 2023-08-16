@@ -15,7 +15,7 @@ class SecurityAgent(object):
         return not(not fetch_master_password())
 
     def set_master_password(self, password: str) -> None:
-        assert_password(password)
+        if not assert_password(password): return
         password = self.encrypt_password(password)
         write_config("Other", password)
 
@@ -30,7 +30,7 @@ class SecurityAgent(object):
         return bcrypt.hashpw(bytes, salt)
     
     def verify_master_password(self, given_password: str) -> bool:
-        assert_password(given_password)
+        if not assert_password(given_password): return False
         return bcrypt.checkpw(given_password, fetch_master_password())
 
     def check_lockout_state(self) -> None:

@@ -46,21 +46,19 @@ def assert_int(integer: int = None) -> None:
 def assert_str(string: str = None, has_int: bool = False, has_special_char: bool = False) -> bool:
     assert isinstance(string, str), ERROR + 'Invalid data type it should be a string!'
     
-    if not (STR_REGEX.match(string)):
-        print(WARNING + f'Invalid string: {string}.')
+    if not (STR_REGEX.match(string)) and not(has_int) and not(has_special_char):
+        print(WARNING + f'Invalid string.')
         return False
-    if has_int and not(INT_REGEX.match(string)):
+    if has_int and not(INT_REGEX.search(string)):
         print(INFO + 'This input needs to have digits.')
         return False
-    if has_special_char and not(SPECIAL_CHARS_REGEX.match(string)):
+    if has_special_char and not(SPECIAL_CHARS_REGEX.search(string)):
         print(INFO + 'This input needs to have special characters.')
         return False
     
     return True
 
 def assert_password(password: str = None, min_length: str = 8) -> bool:
-    assert_str(password, has_int = True, has_special_char = True)
-    
     if len(password) < min_length: 
         print(INFO + f'Password should be at least {min_length} chars long.')
         return False
