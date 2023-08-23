@@ -23,13 +23,13 @@ class SecurityAgent(object):
             return self.set_master_password()
         return fetch_master_password()
 
-    def encrypt_password(self, password: str) -> str:
+    def encrypt_password(self, password: str) -> bytes:
         bytes = password.encode("utf-8")
         salt = bcrypt.gensalt(rounds=15)
         return bcrypt.hashpw(bytes, salt)
     
     def verify_master_password(self, given_password: str) -> bool:
-        return bcrypt.checkpw(given_password, fetch_master_password())
+        return bcrypt.checkpw(given_password.encode("utf-8"), fetch_master_password())
 
     def check_lockout_state(self) -> None:
         pass

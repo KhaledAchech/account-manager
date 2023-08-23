@@ -30,21 +30,6 @@ def banner() -> None:
                                                                     
     """, THEME.get("default"))
 
-# def loading(text: str = 'loading', delay: float = .5) -> None:
-#     print('\033[1;34;40m', end=text)
-#     n_dots = 0
-
-#     while True:
-#         if n_dots == 3:
-#             print(end='\b\b\b', flush=True)
-#             print(end='   ',    flush=True)
-#             print(end='\b\b\b', flush=True)
-#             n_dots = 0
-#         else:
-#             print(end='\033[1;36;40m.', flush=True)
-#             n_dots += 1
-#         sleep(delay)
-
 def verify() -> bool:
     if (not agent.check_master_password()):
         cprint(MESSAGES.get("register_master_passowrd"), THEME.get("default"))
@@ -57,12 +42,13 @@ def verify() -> bool:
             cprint(MESSAGES.get("wrong_master_password_confirmation"), THEME.get("error"))
             confirm = getpass('')
         agent.set_master_password(pwd)
+    
     cprint(MESSAGES.get("ask_for_master_password"), THEME.get("default"))
     pwd = getpass('')
-    # TO DO: add an assertation for authentication when we add the DB and code needs refactoring.
-    while pwd != 'test':
+    while not(agent.verify_master_password(pwd)):
         cprint(MESSAGES.get("incorrect_master_password"), THEME.get("error"))
         pwd = getpass('')
+    
     return True
 
 def menu() -> None:
@@ -81,7 +67,6 @@ def menu() -> None:
         verify()
         cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
         subprocess.run(["python", "account_manager.py"])
-        # loading()
     
     if actions[action] == 1:
         verify()
