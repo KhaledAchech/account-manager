@@ -31,16 +31,4 @@ class SecurityAgent(object):
     def verify_master_password(self, given_password: str) -> bool:
         return bcrypt.checkpw(given_password.encode("utf-8"), fetch_master_password())
 
-    def check_lockout_state(self) -> None:
-        pass
-
-    def change_lockout_state(self) -> None:
-        pass
-
-    def get_lockout_timestamp(self) -> None:
-        pass
-
-    def set_lockout_timestamp(self) -> None:
-        pass
-
 agent = SecurityAgent()
