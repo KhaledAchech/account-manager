@@ -9,7 +9,6 @@ from termcolor import cprint
 
 from validation import assert_config
 
-# TO DO: Need to handle corner cases and refactor code
 def get_constant_from_json(json_file: str = None, branch: str = None, key: str = None) -> str:
     with open(json_file, "r") as constants_file:
         constants = json.load(constants_file)
@@ -22,6 +21,7 @@ API = get_constant_from_json(CONSTS_FILE, "external_service", "API")
 DOMAINES = get_constant_from_json(CONSTS_FILE, "external_service", "domaines")
 ONE_SEC_URL = get_constant_from_json(CONSTS_FILE, "external_service", "1sec_url")
 FILE_PATH = get_constant_from_json(CONSTS_FILE, "files", "conifg_path")
+ACTIONS = get_constant_from_json(CONSTS_FILE, "actions")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")

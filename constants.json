@@ -2,6 +2,21 @@
     "files": {
         "conifg_path": "config.ini"
     },
+    "actions": {
+        "security_assistant": {
+            "Manage your accounts": 0,
+            "Manage temporairy emails": 1,
+            "Exit": -1
+        },
+        "temp_emails_manager": {
+            "create_email": 0,
+            "check emails": 1,
+            "Go back": -1
+        },
+        "account_manager":{
+
+        }
+    },
     "messages": {
         "register_master_passowrd": "Please register your master password",
         "confirm_master_password_registration": "Please confirm the registerted master password",
@@ -9,7 +24,9 @@
         "ask_for_master_password": "Please enter the master password:",
         "incorrect_master_password": "That password isn't right. Please, re-enter your password:",
         "unauthorized_access": "Unauthorized access!",
-        "welcome_message": "This is your Security Assitant, How can I help you ?",
+        "security_assistant_welcome_message": "This is your Security Assitant, How can I help you ?",
+        "temp_emails_manager_welcome_message": "This is your Email Manager, How can I help you ?",
+        "account_manager_welcome_message": "This is your Account Manager, How can I help you ?",
         "fetch_accounts": "Fetching your accounts: ",
         "confirmation": "Confirm?"
     },

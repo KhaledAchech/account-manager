@@ -3,7 +3,7 @@ from os import system
 from time import sleep
 import subprocess
 
-from config import set_file_permissions, MESSAGES, THEME, INQUIRER
+from config import set_file_permissions, ACTIONS, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANT
 from security import agent
 from validation import assert_password
@@ -67,6 +67,7 @@ def temp_email_manager() -> None:
                             /_/                                     /____/                                               
                                                                     
     """, THEME.get("default"))
+    # actions = ACTIONS.get("temp_emails_manager")
 
 def account_manager() -> None:
     cprint(f"""
@@ -86,15 +87,17 @@ def account_manager() -> None:
                                                                     
     """, THEME.get("default"))
     cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
+    # actions = ACTIONS.get("account_manager")
 
 def menu() -> None:
     if not verified:
         cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
         exit(0)
     
+    actions = ACTIONS.get("security_assistant")
     style = get_style(INQUIRER.get("props"), style_override=INQUIRER.get("override"))
     action = inquirer.select(
-        message= MESSAGES.get("welcome_message"),
+        message= MESSAGES.get("security_assistant_welcome_message"),
         choices= actions.keys(),
         style=style
     ).execute()
@@ -121,10 +124,5 @@ if __name__ == "__main__":
     set_file_permissions()
     verified:bool = verify()
     database_connection()
-    actions = {
-        "Manage your accounts": 0,
-        "Manage temporairy emails": 1,
-        "Exit": -1
-    }
     menu()
     DB_INSTANT.close()
