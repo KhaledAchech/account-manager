@@ -27,7 +27,15 @@
         "security_assistant_welcome_message": "This is your Security Assitant, How can I help you ?",
         "temp_emails_manager_welcome_message": "This is your Email Manager, How can I help you ?",
         "account_manager_welcome_message": "This is your Account Manager, How can I help you ?",
+        "create_another_email": "Would you like to create an additional temporairy email?",
+        "custom_domain_question": "Do you wish to use a custom domain name?",
+        "custom_login_question": "Do you have a login name in mind?",
+        "custom_domain_input": "Please enter your custom domain name: ",
+        "custom_login_input": "Please enter your custom login: ",
+        "temp_email_address": "Your temporary email is: ",
+        "copied_to_clipboard": "Data is copied to clipboard",
         "fetch_accounts": "Fetching your accounts: ",
+        "success": "Successfull Operation!",
         "confirmation": "Confirm?"
     },
     "style": {

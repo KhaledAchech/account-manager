@@ -11,6 +11,7 @@ STR_REGEX = re.compile('^[A-Za-z]+$')
 INT_REGEX = re.compile('\d+')
 SPECIAL_CHARS_REGEX = re.compile('[\W_]+')
 PASSWORD_REGEX = re.compile('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')
+MAIL_REGEX = re.compile('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
 def assert_data(data: object = None) -> bool:
     assert data is not None, ERROR + 'Unindefined object! {data}'
@@ -57,6 +58,16 @@ def assert_str(string: str = None, has_int: bool = False, has_special_char: bool
         return False
     
     return True
+
+def assert_mail(mail: str) -> bool:
+    assert_str(mail, has_int = True, has_special_char = True)
+    if not(MAIL_REGEX.match(mail)): print(WARNING + f'Invalid mail: {mail}.')
+    return MAIL_REGEX.match(mail)
+
+def assert_login(login: str) -> bool:
+    assert_str(login, has_int = True, has_special_char = True)
+    if len(login) < 6: print(WARNING + f'Login should be at least 6 chars long.')
+    return len(login) < 6
 
 def assert_password(password: str = None, min_length: str = 8) -> bool:
     if len(password) < min_length: 
