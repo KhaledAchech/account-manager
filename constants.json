@@ -9,8 +9,8 @@
             "Exit": -1
         },
         "temp_emails_manager": {
-            "create_email": 0,
-            "check emails": 1,
+            "Create email": 0,
+            "Check emails": 1,
             "Go back": -1
         },
         "account_manager":{

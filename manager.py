@@ -67,7 +67,7 @@ def temp_email_manager() -> None:
                             /_/                                     /____/                                               
                                                                     
     """, THEME.get("default"))
-    # actions = ACTIONS.get("temp_emails_manager")
+    temp_emails_menu()
 
 def account_manager() -> None:
     cprint(f"""
@@ -89,7 +89,7 @@ def account_manager() -> None:
     cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
     # actions = ACTIONS.get("account_manager")
 
-def menu() -> None:
+def main_menu() -> None:
     if not verified:
         cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
         exit(0)
@@ -105,10 +105,12 @@ def menu() -> None:
     if actions[action] == 0:
         verify()
         account_manager()
+        main_menu()
     
     if actions[action] == 1:
         verify()
         temp_email_manager()
+        main_menu()
     
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
@@ -116,7 +118,27 @@ def menu() -> None:
             if DB_INSTANT is not None:
                 DB_INSTANT.close()
             exit(0)
-        menu()
+        main_menu()
+
+def temp_emails_menu():
+    actions = ACTIONS.get("temp_emails_manager")
+    style = get_style(INQUIRER.get("props"), style_override=INQUIRER.get("override"))
+    action = inquirer.select(
+        message= MESSAGES.get("temp_emails_manager_welcome_message"),
+        choices= actions.keys(),
+        style=style
+    ).execute()
+    
+    if actions[action] == 0:
+        verify()
+    
+    if actions[action] == 1:
+        verify()
+    
+    if actions[action] == -1:
+        if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
+            system('cls')
+            return
 
 if __name__ == "__main__":
     init()
@@ -124,5 +146,5 @@ if __name__ == "__main__":
     set_file_permissions()
     verified:bool = verify()
     database_connection()
-    menu()
+    main_menu()
     DB_INSTANT.close()
