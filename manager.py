@@ -121,7 +121,7 @@ def main_menu() -> None:
             exit(0)
         main_menu()
 
-def temp_emails_menu():
+def temp_emails_menu() -> None:
     actions = ACTIONS.get("temp_emails_manager")
     action = inquirer.select(
         message= MESSAGES.get("temp_emails_manager_welcome_message"),
