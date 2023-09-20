@@ -41,6 +41,13 @@ def assert_dict(dictionary: dict = None) -> bool:
         return False
     return True
 
+def assert_bool(condition: bool, expected_result: bool, info_message: str) -> bool:
+    assert isinstance(condition, bool), ERROR + 'Invalid data type, it should be a boolean expression!'
+    assert isinstance(expected_result, bool), ERROR + 'Invalid data type, it should be a boolean expression!'
+    assert isinstance(info_message, str), ERROR + 'Invalid data type it should be a string!'
+    if condition != expected_result: INFO + info_message
+    return condition == expected_result
+
 def assert_int(integer: int = None) -> None:
     assert isinstance(integer, int), ERROR + 'Invalid data type, it should be an integer!'
 

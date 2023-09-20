@@ -4,7 +4,7 @@ import json
 import configparser
 import base64
 
-from os import system
+from os import system, getcwd, path, makedirs
 from termcolor import cprint
 
 from validation import assert_config
@@ -25,6 +25,12 @@ ACTIONS = get_constant_from_json(CONSTS_FILE, "actions")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
+
+def create_dir(name: str) -> str:
+    dir = path.join(getcwd, name)
+    if not path.exists(dir):
+        makedirs(dir)
+    return dir
 
 def set_file_permissions() -> None:
     if platform.system() == "Windows":
