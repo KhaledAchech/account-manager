@@ -25,12 +25,7 @@ ACTIONS = get_constant_from_json(CONSTS_FILE, "actions")
 MESSAGES = get_constant_from_json(CONSTS_FILE, "messages")
 THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
-
-def create_dir(name: str) -> str:
-    dir = path.join(getcwd, name)
-    if not path.exists(dir):
-        makedirs(dir)
-    return dir
+MAX_CHARS = 40
 
 def set_file_permissions() -> None:
     if platform.system() == "Windows":
@@ -79,3 +74,21 @@ def fetch_master_password() -> bytes:
     config = read_config()
     mp = config.get("Other", "master_password")
     return base64.b64decode(mp)
+
+def wrap_string(s: str) -> list:
+    if len(s) <= MAX_CHARS:
+        return [s]
+    
+    lines = []
+    while len(s) > MAX_CHARS:
+        wrap_index = s.rfind(' ', 0, MAX_CHARS)
+        if wrap_index == -1:
+            wrap_index = MAX_CHARS
+        
+        lines.append(s[:wrap_index])
+        s = s[wrap_index:].strip()
+    
+    if s:
+        lines.append(s)
+    
+    return lines

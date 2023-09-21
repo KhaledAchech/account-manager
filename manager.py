@@ -4,11 +4,11 @@ from getpass import getpass
 from os import system
 from time import sleep
 
-from config import set_file_permissions, ACTIONS, MESSAGES, THEME, INQUIRER
+from config import set_file_permissions, wrap_string, ACTIONS, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANT
 from security import agent
 from validation import assert_password
-from temp_email import create_email
+from temp_email import create_email, check_mail
 
 from colorama import init
 from InquirerPy import get_style, inquirer
@@ -135,6 +135,7 @@ def temp_emails_menu() -> None:
     
     if actions[action] == 1:
         verify()
+        fetch_mail()
     
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
@@ -157,6 +158,25 @@ def set_temp_email() -> None:
     if inquirer.confirm(message=MESSAGES.get("create_another_email"), default=True).execute():
         set_temp_email()
     temp_email_manager()
+
+def fetch_mail() -> None:
+    cprint(MESSAGES.get("enter_mail"), THEME.get("default"))
+    mail = input()
+    while True:
+        mails = check_mail(mail)
+        for m in mails:
+            print(f"---------------------------- | Inbox of {mail}| ----------------------------\n")
+            for key, value in m.items():
+                print(f" __________________________________________________________________________ \n")
+                if key != "Content":
+                    print(f"| {key}: {value}                                                         |\n")
+                else:
+                    content = wrap_string(value)
+                    for line in content:
+                        print(f"|{line}                                                                    |\n")
+                print(f" __________________________________________________________________________ \n")
+            print(f"----------------------------------------------------------------------------\n")
+        sleep(5)
 
 if __name__ == "__main__":
     init()

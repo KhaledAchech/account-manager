@@ -34,6 +34,7 @@
         "custom_login_input": "Please enter your custom login: ",
         "temp_email_address": "Your temporary email is: ",
         "copied_to_clipboard": "Data is copied to clipboard",
+        "enter_mail": "Please Enter the email address: ",
         "fetch_accounts": "Fetching your accounts: ",
         "success": "Successfull Operation!",
         "confirmation": "Confirm?"

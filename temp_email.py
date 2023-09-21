@@ -2,7 +2,7 @@ import random
 import requests
 from os import path
 from string import ascii_letters
-from config import API, DOMAINES, create_dir
+from config import API, DOMAINES
 from validation import assert_bool, assert_mail, assert_str, assert_login
     
 def create_email(login: str = None, domain: str = None) -> str:
@@ -20,7 +20,7 @@ def create_email(login: str = None, domain: str = None) -> str:
     requests.get(f"{API}?login={login}&domain={domain}")
     return mail
 
-def check_mail(mail: str) -> None:
+def check_mail(mail: str) -> list:
     assert_mail(mail)
     login, domain = mail.split('@')
     assert_login(login)
@@ -28,14 +28,14 @@ def check_mail(mail: str) -> None:
     
     request = requests.get(f'{API}?action=getMessages&login={login}&domain={domain}').json()
     assert_bool(len(request) > 0, True, "Your mailbox is empty. Hold tight. Mailbox is refreshed automatically every 5 seconds.")
-    mails = []                          # This list will hold the mails ids fetched from the request
+    ids = []                          # This list will hold the mails ids fetched from the request
     for mail_id in request:
         for key, value in mail_id.items():
             if key == 'id':
-                mails.append(value)
+                ids.append(value)
     
-    mails_dir = create_dir(r'All Mails');
-    for id in mails:
+    mails = []
+    for id in ids:
         request = requests.get(f'{API}?action=readMessage&login={login}&domain={domain}&id={id}').json()
         for key,value in request.items():
                 if key == 'from':
@@ -46,11 +46,18 @@ def check_mail(mail: str) -> None:
                     date = value
                 if key == 'textBody':
                     content = value
-
-        mail_files = path.join(mails_dir, f'{id}.txt')
         
-        with open(mail_files, 'w') as file:
-            file.write("Sender: " + sender + '\n' + "To: " + mail + '\n' + "Subject: " + subject + '\n' + "Date: " + date + '\n' + "Content: " + content + '\n')
+        mails.append(
+            {
+                "Sender": sender,
+                "To": mail,
+                "Subject": subject,
+                "Date": date,
+                "Content": content
+            }
+        )
+    
+    return mails
     
 def generate_login(length: int = 6) -> str:
     return ''.join(random.choice(ascii_letters) for _ in range(length))
