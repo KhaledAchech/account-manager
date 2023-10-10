@@ -51,12 +51,15 @@ def assert_bool(condition: bool, expected_result: bool, info_message: str) -> bo
 def assert_int(integer: int = None) -> None:
     assert isinstance(integer, int), ERROR + 'Invalid data type, it should be an integer!'
 
-def assert_str(string: str = None, has_int: bool = False, has_special_char: bool = False) -> bool:
+def assert_str(string: str = None, has_int: bool = False, has_special_char: bool = False, optional: bool = False) -> bool:
     assert isinstance(string, str), ERROR + 'Invalid data type it should be a string!'
     
     if not (STR_REGEX.match(string)) and not(has_int) and not(has_special_char):
         print(WARNING + f'Invalid string: {string}.')
         return False
+    
+    if optional: return True # optional is for special characters or ints within a string so there is no need for further checking if it's True
+    
     if has_int and not(INT_REGEX.search(string)):
         print(INFO + f'This input needs to have digits: {string}.')
         return False
@@ -67,12 +70,12 @@ def assert_str(string: str = None, has_int: bool = False, has_special_char: bool
     return True
 
 def assert_mail(mail: str) -> bool:
-    assert_str(mail, has_int = True, has_special_char = True)
+    assert_str(mail, has_int = True, has_special_char = True, optional=True)
     if not(MAIL_REGEX.match(mail)): print(WARNING + f'Invalid mail: {mail}.')
     return MAIL_REGEX.match(mail)
 
 def assert_login(login: str) -> bool:
-    assert_str(login, has_int = True, has_special_char = True)
+    assert_str(login, has_int = True, has_special_char = True, optional=True)
     if len(login) < 6: print(WARNING + f'Login should be at least 6 chars long.')
     return len(login) < 6
 

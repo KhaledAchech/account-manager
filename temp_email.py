@@ -24,7 +24,7 @@ def check_mail(mail: str) -> list:
     assert_mail(mail)
     login, domain = mail.split('@')
     assert_login(login)
-    assert_str(domain, has_int = True, has_special_char = True)
+    assert_str(domain, has_int = True, has_special_char = True, optional = True)
     
     request = requests.get(f'{API}?action=getMessages&login={login}&domain={domain}').json()
     assert_bool(len(request) > 0, True, "Your mailbox is empty. Hold tight. Mailbox is refreshed automatically every 5 seconds.")
