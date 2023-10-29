@@ -27,6 +27,7 @@ THEME = get_constant_from_json(CONSTS_FILE, "style", "theme")
 INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
 MAX_CHARS = 40
 
+# Set the config.ini file permissions to only be granted to the system owner (not for all users).
 def set_file_permissions() -> None:
     if platform.system() == "Windows":
         command = ["icacls", FILE_PATH, "/grant", f"*S-1-1-0:(R)"]
@@ -75,6 +76,7 @@ def fetch_master_password() -> bytes:
     mp = config.get("Other", "master_password")
     return base64.b64decode(mp)
 
+#Clean up a messy string into a list of strings aka a paragraph lines
 def wrap_string(s: str) -> list:
     if len(s) <= MAX_CHARS:
         return [s]
