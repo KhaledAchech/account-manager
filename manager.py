@@ -4,6 +4,7 @@ from getpass import getpass
 from os import system
 from time import sleep
 
+from art_printer import security_assistant_banner, account_banner, temp_email_banner, draw_mail_box
 from config import set_file_permissions, wrap_string, ACTIONS, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANT
 from security import agent
@@ -13,24 +14,6 @@ from temp_email import create_email, check_mail
 from colorama import init
 from InquirerPy import get_style, inquirer
 from termcolor import cprint
-
-
-def banner() -> None:
-    cprint(f"""
-        .|'''|                                      ||                        
-        ||                                    ''    ||                        
-        `|'''|, .|''|, .|'', '||  ||` '||''|  ||  ''||''  '||  ||`            
-         .   || ||..|| ||     ||  ||   ||     ||    ||     `|..||             
-         |...|' `|...  `|..'  `|..'|. .||.   .||.   `|..'      ||             
-                                                            ,  |'             
-                                                             ''               
-                 /.\                               ||                       ||    
-                // \\                  ''          ||                       ||    
-               //...\\    ('''' (''''  ||  ('''' ''||''   '''|.  `||''|,  ''||''  
-              //     \\    `'')  `'')  ||   `'')   ||    .|''||   ||  ||    ||    
-            .//       \\. `...' `...' .||. `...'   `|..' `|..||. .||  ||.   `|..' 
-                                                                    
-    """, THEME.get("default"))
 
 def verify() -> bool:
     if (not agent.check_master_password()):
@@ -54,40 +37,11 @@ def verify() -> bool:
     return True
 
 def temp_email_manager() -> None:
-    cprint(f"""
-        ______  ___                                                                                                              
-        ___   |/  /_____ _____________ _______ _____                                                                             
-        __  /|_/ /_  __ `/_  __ \  __ `/_  __ `/  _ \                                                                            
-        _  /  / / / /_/ /_  / / / /_/ /_  /_/ //  __/                                                                            
-        /_/  /_/  \__,_/ /_/ /_/\__,_/ _\__, / \___/                                                                             
-                               /____/                                                                                    
-       _____                                            _____                                          ___________       
-       __  /____________ ______________________________ ___(_)___________  __   ____________ _________ ___(_)__  /_______
-       _  __/  _ \_  __ `__ \__  __ \  __ \_  ___/  __ `/_  /__  ___/_  / / /   _  _ \_  __ `__ \  __ `/_  /__  /__  ___/
-       / /_ /  __/  / / / / /_  /_/ / /_/ /  /   / /_/ /_  / _  /   _  /_/ /    /  __/  / / / / / /_/ /_  / _  / _(__  ) 
-       \__/ \___//_/ /_/ /_/_  .___/\____//_/    \__,_/ /_/  /_/    _\__, /     \___//_/ /_/ /_/\__,_/ /_/  /_/  /____/  
-                            /_/                                     /____/                                               
-                                                                    
-    """, THEME.get("default"))
+    temp_email_banner()
     temp_emails_menu()
 
 def account_manager() -> None:
-    cprint(f"""
-        █████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███╗   ██╗████████╗ 
-        ██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝ 
-        ███████║██║     ██║     ██║   ██║██║   ██║██╔██╗ ██║   ██║    
-        ██╔══██║██║     ██║     ██║   ██║██║   ██║██║╚██╗██║   ██║    
-        ██║  ██║╚██████╗╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║   ██║    
-        ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝    
-                                                                    
-            ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗ 
-            ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗
-            ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝
-            ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██╔══██╗
-            ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║
-            ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
-                                                                    
-    """, THEME.get("default"))
+    account_banner()
     cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
     # actions = ACTIONS.get("account_manager")
 
@@ -159,28 +113,25 @@ def set_temp_email() -> None:
         set_temp_email()
     temp_email_manager()
 
-def fetch_mail() -> None:
-    cprint(MESSAGES.get("enter_mail"), THEME.get("default"))
-    mail = input()
-    while True:
-        mails = check_mail(mail)
-        for m in mails:
-            print(f"---------------------------- | Inbox of {mail}| ----------------------------\n")
-            for key, value in m.items():
-                print(f" __________________________________________________________________________ \n")
-                if key != "Content":
-                    print(f"| {key}: {value}                                                         |\n")
-                else:
-                    content = wrap_string(value)
-                    for line in content:
-                        print(f"|{line}                                                                    |\n")
-                print(f" __________________________________________________________________________ \n")
-            print(f"----------------------------------------------------------------------------\n")
-        sleep(5)
+def fetch_mail(mail: str = None) -> None:
+    if not mail:
+        cprint(MESSAGES.get("enter_mail"), THEME.get("default"))
+        mail = input()
+    mails = check_mail(mail)
+    for m in mails:
+        for key, value in m.items():
+            if key == "Subject": subject = value
+            if key == "Sender": sender = value
+            if key == "Content": content = value
+        recipient = mail
+        draw_mail_box(sender, recipient, subject, content)
+    if inquirer.confirm(message=MESSAGES.get("refresh_mail_box"), default=True).execute():
+        fetch_mail(mail)
+    temp_email_manager()
 
 if __name__ == "__main__":
     init()
-    banner()
+    security_assistant_banner()
     set_file_permissions()
     verified:bool = verify()
     database_connection()

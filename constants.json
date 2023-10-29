@@ -35,6 +35,7 @@
         "temp_email_address": "Your temporary email is: ",
         "copied_to_clipboard": "Data is copied to clipboard",
         "enter_mail": "Please Enter the email address: ",
+        "refresh_mail_box": "Would you like to refresh your mail box?",
         "fetch_accounts": "Fetching your accounts: ",
         "success": "Successfull Operation!",
         "confirmation": "Confirm?"
@@ -44,7 +45,8 @@
             "default": "blue",
             "error": "red",
             "warning": "yellow",
-            "success": "green"
+            "success": "green",
+            "box": "magenta"
         },
         "inquirer": {
             "props" : {
