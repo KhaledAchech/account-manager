@@ -2,11 +2,10 @@ import pyperclip
 
 from getpass import getpass
 from os import system
-from time import sleep
 
 from art_printer import security_assistant_banner, account_banner, temp_email_banner, draw_mail_box
-from config import set_file_permissions, wrap_string, ACTIONS, MESSAGES, THEME, INQUIRER
-from connector import database_connection, DB_INSTANT
+from config import set_file_permissions, ACTIONS, MESSAGES, THEME, INQUIRER
+from connector import database_connection, DB_INSTANCE
 from security import agent
 from validation import assert_password
 from temp_email import create_email, check_mail
@@ -15,86 +14,94 @@ from colorama import init
 from InquirerPy import get_style, inquirer
 from termcolor import cprint
 
+
 def verify() -> bool:
     if (not agent.check_master_password()):
         cprint(MESSAGES.get("register_master_passowrd"), THEME.get("default"))
         pwd = getpass('')
-        while not(assert_password(pwd)):
+        while not (assert_password(pwd)):
             pwd = getpass('')
-        cprint(MESSAGES.get("confirm_master_password_registration"), THEME.get("default"))
+        cprint(MESSAGES.get("confirm_master_password_registration"),
+               THEME.get("default"))
         confirm = getpass('')
         while confirm != pwd:
-            cprint(MESSAGES.get("wrong_master_password_confirmation"), THEME.get("error"))
+            cprint(MESSAGES.get("wrong_master_password_confirmation"),
+                   THEME.get("error"))
             confirm = getpass('')
         agent.set_master_password(pwd)
-    
+
     cprint(MESSAGES.get("ask_for_master_password"), THEME.get("default"))
     pwd = getpass('')
-    while not(agent.verify_master_password(pwd)):
+    while not (agent.verify_master_password(pwd)):
         cprint(MESSAGES.get("incorrect_master_password"), THEME.get("error"))
         pwd = getpass('')
-    
+
     return True
+
 
 def temp_email_manager() -> None:
     temp_email_banner()
     temp_emails_menu()
+
 
 def account_manager() -> None:
     account_banner()
     cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
     # actions = ACTIONS.get("account_manager")
 
+
 def main_menu() -> None:
     if not verified:
         cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
         exit(0)
-    
+
     actions = ACTIONS.get("security_assistant")
     action = inquirer.select(
-        message= MESSAGES.get("security_assistant_welcome_message"),
-        choices= actions.keys(),
+        message=MESSAGES.get("security_assistant_welcome_message"),
+        choices=actions.keys(),
         style=style
     ).execute()
-    
+
     if actions[action] == 0:
         verify()
         account_manager()
         main_menu()
-    
+
     if actions[action] == 1:
         verify()
         temp_email_manager()
         main_menu()
-    
+
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
             system('cls')
-            if DB_INSTANT is not None:
-                DB_INSTANT.close()
+            if DB_INSTANCE is not None:
+                DB_INSTANCE.close()
             exit(0)
         main_menu()
+
 
 def temp_emails_menu() -> None:
     actions = ACTIONS.get("temp_emails_manager")
     action = inquirer.select(
-        message= MESSAGES.get("temp_emails_manager_welcome_message"),
-        choices= actions.keys(),
+        message=MESSAGES.get("temp_emails_manager_welcome_message"),
+        choices=actions.keys(),
         style=style
     ).execute()
-    
+
     if actions[action] == 0:
         verify()
         set_temp_email()
-    
+
     if actions[action] == 1:
         verify()
         fetch_mail()
-    
+
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
             system('cls')
             return
+
 
 def set_temp_email() -> None:
     login, domain, = None, None
@@ -113,6 +120,7 @@ def set_temp_email() -> None:
         set_temp_email()
     temp_email_manager()
 
+
 def fetch_mail(mail: str = None) -> None:
     if not mail:
         cprint(MESSAGES.get("enter_mail"), THEME.get("default"))
@@ -120,21 +128,26 @@ def fetch_mail(mail: str = None) -> None:
     mails = check_mail(mail)
     for m in mails:
         for key, value in m.items():
-            if key == "Subject": subject = value
-            if key == "Sender": sender = value
-            if key == "Content": content = value
+            if key == "Subject":
+                subject = value
+            if key == "Sender":
+                sender = value
+            if key == "Content":
+                content = value
         recipient = mail
         draw_mail_box(sender, recipient, subject, content)
     if inquirer.confirm(message=MESSAGES.get("refresh_mail_box"), default=True).execute():
         fetch_mail(mail)
     temp_email_manager()
 
+
 if __name__ == "__main__":
     init()
     security_assistant_banner()
     set_file_permissions()
-    verified:bool = verify()
+    verified: bool = verify()
     database_connection()
-    style = get_style(INQUIRER.get("props"), style_override=INQUIRER.get("override"))
+    style = get_style(INQUIRER.get("props"),
+                      style_override=INQUIRER.get("override"))
     main_menu()
-    DB_INSTANT.close()
+    DB_INSTANCE.close()
