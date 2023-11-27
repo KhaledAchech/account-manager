@@ -14,7 +14,9 @@
             "Go back": -1
         },
         "account_manager":{
-
+            "Add an account": 0,
+            "List your accounts": 1,
+            "Go back": -1
         }
     },
     "messages": {
