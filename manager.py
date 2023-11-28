@@ -8,7 +8,7 @@ from config import set_file_permissions, ACTIONS, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANCE
 from security import agent
 from validation import assert_password
-from account import add_new_account, list_accounts
+from account import AM
 from temp_email import create_email, check_mail
 
 from colorama import init
@@ -42,8 +42,8 @@ def verify() -> bool:
 
 def account_manager() -> None:
     account_banner()
-    cprint("TO BE CONTINUED ... ☻", THEME.get("warning"))
-    # account_menu()
+    # cprint("TO BE CONTINUED ... ☻", THEME.get("warning"))
+    account_menu()
 
 
 def account_menu() -> None:
@@ -66,7 +66,6 @@ def account_menu() -> None:
             system('cls')
             return
 
-
 def add_account():
     login = input("Type in the login for this account: ")
     print("Type in the new account password: ")
@@ -77,18 +76,15 @@ def add_account():
         "login": login,
         "password": password
     }
-    add_new_account(credentials, sitename, link)
+    AM.add_new_account(credentials, sitename, link)
     # the same inquirer behaviour for asking for another account to add or going back
 
-
 def get_accounts():
-    list_accounts()
-
+    AM.list_accounts()
 
 def temp_email_manager() -> None:
     temp_email_banner()
     temp_emails_menu()
-
 
 def temp_emails_menu() -> None:
     actions = ACTIONS.get("temp_emails_manager")
@@ -111,7 +107,6 @@ def temp_emails_menu() -> None:
             system('cls')
             return
 
-
 def set_temp_email() -> None:
     login, domain, = None, None
     if inquirer.confirm(message=MESSAGES.get("custom_login_question"), default=True).execute():
@@ -128,7 +123,6 @@ def set_temp_email() -> None:
     if inquirer.confirm(message=MESSAGES.get("create_another_email"), default=True).execute():
         set_temp_email()
     temp_email_manager()
-
 
 def fetch_mail(mail: str = None) -> None:
     if not mail:
@@ -148,7 +142,6 @@ def fetch_mail(mail: str = None) -> None:
     if inquirer.confirm(message=MESSAGES.get("refresh_mail_box"), default=True).execute():
         fetch_mail(mail)
     temp_email_manager()
-
 
 def main_menu() -> None:
     if not verified:

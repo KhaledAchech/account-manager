@@ -3,8 +3,6 @@ from config import get_db_params, THEME
 from termcolor import cprint
 
 DB_PARAMS = get_db_params()
-
-
 def server_connection() -> object:
     try:
         connection = psycopg2.connect(
@@ -21,8 +19,6 @@ def server_connection() -> object:
         exit(1)
 
     return connection
-
-
 DB_SERVER = server_connection()
 
 
@@ -33,7 +29,6 @@ def database_exists() -> bool:
     exists = cursor.fetchone() is not None
     cursor.close()
     return exists
-
 
 def database_connection() -> object:
     if not database_exists():
@@ -63,6 +58,4 @@ def database_connection() -> object:
         cprint(f"Error connecting to the database: {e}", THEME.get("error"))
         exit(1)
     return connection
-
-
 DB_INSTANCE = database_connection()

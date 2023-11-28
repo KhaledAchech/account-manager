@@ -25,7 +25,6 @@ def account_banner():
                                                                     
     """, THEME.get("default"))
 
-
 def security_assistant_banner():
     cprint(f"""
         .|'''|                                      ||                        
@@ -43,7 +42,6 @@ def security_assistant_banner():
                                                                     
     """, THEME.get("default"))
 
-
 def temp_email_banner():
     cprint(f"""
         ______  ___                                                                                                              
@@ -60,7 +58,6 @@ def temp_email_banner():
                             /_/                                     /____/                                               
                                                                     
     """, THEME.get("default"))
-
 
 def draw_mail_box(sender: str, recipient: str, subject: str, content: str) -> None:
     # Determine the maximum line width
@@ -83,7 +80,6 @@ def draw_mail_box(sender: str, recipient: str, subject: str, content: str) -> No
     mailbox = top + middle + bottom + content_box + bottom
     init(autoreset=True)
     cprint(mailbox, THEME.get("box"))
-
 
 def draw_accounts_table(stdscr: object, selected_row: int, accounts: list) -> None:
     stdscr.clear()

@@ -31,8 +31,6 @@ INQUIRER = get_constant_from_json(CONSTS_FILE, "style", "inquirer")
 MAX_CHARS = 40
 
 # Set the config.ini file permissions to only be granted to the system owner (not for all users).
-
-
 def set_file_permissions() -> None:
     if platform.system() == "Windows":
         command = ["icacls", FILE_PATH, "/grant", f"*S-1-1-0:(R)"]
@@ -47,23 +45,20 @@ def set_file_permissions() -> None:
         system('cls')
         exit(0)
 
-
 def read_fernet_key():
     config = read_config()
     if config.has_section("Security") and config.has_option("Security", "fernet_key"):
         return config.get("Security", "fernet_key")
     return None
 
-
 def read_config() -> object:
     config = configparser.ConfigParser()
     config.read(FILE_PATH)
     return config
 
-
 def write_config(section: str, option: str = None, value: str = None) -> None:
     ''' config.ini only holds string configuration data. '''
-    # assert_config(section, option, value)
+    assert_config(section, option, value)
 
     config = read_config()
     if section not in config:
@@ -73,7 +68,6 @@ def write_config(section: str, option: str = None, value: str = None) -> None:
 
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
-
 
 def get_db_params() -> dict:
     config = read_config()
@@ -86,15 +80,12 @@ def get_db_params() -> dict:
         "port": config.get("Database", "port")
     }
 
-
 def fetch_master_password() -> bytes:
     config = read_config()
     mp = config.get("Other", "master_password")
     return base64.b64decode(mp)
 
 # Clean up a messy string into a list of strings aka a paragraph lines
-
-
 def wrap_string(s: str) -> list:
     if len(s) <= MAX_CHARS:
         return [s]
