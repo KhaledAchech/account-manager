@@ -8,6 +8,7 @@ from config import set_file_permissions, ACTIONS, MESSAGES, THEME, INQUIRER
 from connector import database_connection, DB_INSTANCE
 from security import agent
 from validation import assert_password
+from account import add_new_account, list_accounts
 from temp_email import create_email, check_mail
 
 from colorama import init
@@ -39,46 +40,54 @@ def verify() -> bool:
     return True
 
 
-def temp_email_manager() -> None:
-    temp_email_banner()
-    temp_emails_menu()
-
-
 def account_manager() -> None:
     account_banner()
-    cprint(MESSAGES.get("fetch_accounts"), THEME.get("success"))
-    # actions = ACTIONS.get("account_manager")
+    cprint("TO BE CONTINUED ... ☻", THEME.get("warning"))
+    # account_menu()
 
 
-def main_menu() -> None:
-    if not verified:
-        cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
-        exit(0)
-
-    actions = ACTIONS.get("security_assistant")
+def account_menu() -> None:
+    actions = ACTIONS.get("account_manager")
     action = inquirer.select(
-        message=MESSAGES.get("security_assistant_welcome_message"),
+        message=MESSAGES.get("account_manager_welcome_message"),
         choices=actions.keys(),
         style=style
     ).execute()
-
     if actions[action] == 0:
-        verify()
-        account_manager()
-        main_menu()
+        # verify()
+        add_account()
 
     if actions[action] == 1:
-        verify()
-        temp_email_manager()
-        main_menu()
+        # verify()
+        get_accounts()
 
     if actions[action] == -1:
         if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
             system('cls')
-            if DB_INSTANCE is not None:
-                DB_INSTANCE.close()
-            exit(0)
-        main_menu()
+            return
+
+
+def add_account():
+    login = input("Type in the login for this account: ")
+    print("Type in the new account password: ")
+    password = getpass()
+    sitename = input("Type in the app name for this account: ")
+    link = input("Paste in the link of this app: ")
+    credentials = {
+        "login": login,
+        "password": password
+    }
+    add_new_account(credentials, sitename, link)
+    # the same inquirer behaviour for asking for another account to add or going back
+
+
+def get_accounts():
+    list_accounts()
+
+
+def temp_email_manager() -> None:
+    temp_email_banner()
+    temp_emails_menu()
 
 
 def temp_emails_menu() -> None:
@@ -139,6 +148,37 @@ def fetch_mail(mail: str = None) -> None:
     if inquirer.confirm(message=MESSAGES.get("refresh_mail_box"), default=True).execute():
         fetch_mail(mail)
     temp_email_manager()
+
+
+def main_menu() -> None:
+    if not verified:
+        cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
+        exit(0)
+
+    actions = ACTIONS.get("security_assistant")
+    action = inquirer.select(
+        message=MESSAGES.get("security_assistant_welcome_message"),
+        choices=actions.keys(),
+        style=style
+    ).execute()
+
+    if actions[action] == 0:
+        verify()
+        account_manager()
+        main_menu()
+
+    if actions[action] == 1:
+        verify()
+        temp_email_manager()
+        main_menu()
+
+    if actions[action] == -1:
+        if inquirer.confirm(message=MESSAGES.get("confirmation"), default=True).execute():
+            system('cls')
+            if DB_INSTANCE is not None:
+                DB_INSTANCE.close()
+            exit(0)
+        main_menu()
 
 
 if __name__ == "__main__":

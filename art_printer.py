@@ -1,8 +1,11 @@
+import curses
+
 from config import THEME
 from termcolor import cprint
 from colorama import init, Fore, Back
 
 MAIL = Back.WHITE + Fore.BLUE
+
 
 def account_banner():
     cprint(f"""
@@ -22,6 +25,7 @@ def account_banner():
                                                                     
     """, THEME.get("default"))
 
+
 def security_assistant_banner():
     cprint(f"""
         .|'''|                                      ||                        
@@ -39,6 +43,7 @@ def security_assistant_banner():
                                                                     
     """, THEME.get("default"))
 
+
 def temp_email_banner():
     cprint(f"""
         ______  ___                                                                                                              
@@ -55,15 +60,18 @@ def temp_email_banner():
                             /_/                                     /____/                                               
                                                                     
     """, THEME.get("default"))
-    
-def draw_mail_box(sender: str, recipient: str, subject: str, content: str)->None:
+
+
+def draw_mail_box(sender: str, recipient: str, subject: str, content: str) -> None:
     # Determine the maximum line width
     content_lines = content.split('\n')
-    max_line_length = max(len(sender), len(recipient), len(subject), max(len(line) for line in content_lines))
+    max_line_length = max(len(sender), len(recipient), len(
+        subject), max(len(line) for line in content_lines))
 
     # Create the top and bottom parts of the mailbox
     top = "+-" + "-" * max_line_length + "-+\n"
-    middle = MAIL + f"|SENDER: {sender.ljust(max_line_length)}|\n|TO: {recipient.ljust(max_line_length)}|\n|SUBJECT: {subject.ljust(max_line_length)}|\n"
+    middle = MAIL + \
+        f"|SENDER: {sender.ljust(max_line_length)}|\n|TO: {recipient.ljust(max_line_length)}|\n|SUBJECT: {subject.ljust(max_line_length)}|\n"
     init(autoreset=True)
     bottom = "+-" + "-" * max_line_length + "-+\n"
 
@@ -75,3 +83,17 @@ def draw_mail_box(sender: str, recipient: str, subject: str, content: str)->None
     mailbox = top + middle + bottom + content_box + bottom
     init(autoreset=True)
     cprint(mailbox, THEME.get("box"))
+
+
+def draw_accounts_table(stdscr: object, selected_row: int, accounts: list) -> None:
+    stdscr.clear()
+
+    stdscr.addstr(0, 0, "Login\tPassword\tSitename\tLink", curses.A_BOLD)
+
+    for i, account in enumerate(accounts, start=1):
+        stdscr.addstr(
+            i, 0, f"{account['login']}\t{'☻'*len(account['password'])}\t{account['sitename']}\t{account['link']}")
+        if i == selected_row:
+            stdscr.chgat(i, 0, curses.A_REVERSE)
+
+    stdscr.refresh()
