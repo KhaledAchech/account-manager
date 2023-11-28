@@ -18,17 +18,16 @@ class SecurityAgent(object):
         # Check if a key is already stored, otherwise generate and store a new one
         fernet_key = read_fernet_key()
         if fernet_key is None:
-            fernet_key = Fernet.generate_key()
-            write_config("Security", "fernet_key",
-                         self.encode_base64(fernet_key))
+            fernet_key = self.encode_base64(Fernet.generate_key())
+            write_config("Security", "fernet_key", fernet_key)
 
         self.encryption_key = self.decode_base64(fernet_key)
         self.cipher = Fernet(self.encryption_key)
 
-    def encode_base64(self, data):
+    def encode_base64(self, data) -> str:
         return base64.b64encode(data).decode("utf-8")
 
-    def decode_base64(self, data):
+    def decode_base64(self, data) -> bytes:
         return base64.b64decode(data)
 
     def check_master_password(self) -> bool:

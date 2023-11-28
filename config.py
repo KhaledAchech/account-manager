@@ -51,8 +51,7 @@ def set_file_permissions() -> None:
 def read_fernet_key():
     config = read_config()
     if config.has_section("Security") and config.has_option("Security", "fernet_key"):
-        fernet_key_str = config.get("Security", "fernet_key")
-        return base64.b64decode(fernet_key_str.encode("utf-8"))
+        return config.get("Security", "fernet_key")
     return None
 
 
