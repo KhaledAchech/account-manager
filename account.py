@@ -21,9 +21,10 @@ class AccountManager():
         # merge the new decrypted credentials dict into accounts
         if len(self.accounts) == 0: return
         for account in self.accounts:
-            credentials = agent.decrypt_credentials(account["credentials"])
-            account.pop("credentials", None)
-            account.update(credentials)
+            if "credentials" in account.keys():
+                credentials = agent.decrypt_credentials(account["credentials"])
+                account.pop("credentials", None)
+                account.update(credentials)
         curses.wrapper(self.accounts_table_handler)
         
     def accounts_table_handler(self, stdscr: object) -> None:

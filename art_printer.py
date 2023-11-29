@@ -6,7 +6,6 @@ from colorama import init, Fore, Back
 
 MAIL = Back.WHITE + Fore.BLUE
 
-
 def account_banner():
     cprint(f"""
         █████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███╗   ██╗████████╗ 
@@ -83,13 +82,27 @@ def draw_mail_box(sender: str, recipient: str, subject: str, content: str) -> No
 
 def draw_accounts_table(stdscr: object, selected_row: int, accounts: list) -> None:
     stdscr.clear()
-
-    stdscr.addstr(0, 0, "Login\tPassword\tSitename\tLink", curses.A_BOLD)
-
+    
+    # Table Theme 
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)  # Header color
+    curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)  # Even row color
+    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)   # Odd row color
+    curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Selected row color
+    
+    stdscr.addstr(0, 0, "Login".ljust(20) + "Password".ljust(20) + "Sitename".ljust(30) + "Link", 
+                  curses.A_BOLD | curses.color_pair(1))
     for i, account in enumerate(accounts, start=1):
-        stdscr.addstr(
-            i, 0, f"{account['login']}\t{'☻'*len(account['password'])}\t{account['sitename']}\t{account['link']}")
+        color_pair = curses.color_pair(2) if i % 2 == 0 else curses.color_pair(3)
+        login = account['login'].ljust(20)
+        password = ('○' * len(account['password'])).ljust(20)
+        sitename = account['sitename'].ljust(30)
+        link = account['link']
+        stdscr.addstr(i, 0, f"{login}{password}{sitename}{link}",color_pair)
         if i == selected_row:
-            stdscr.chgat(i, 0, curses.A_REVERSE)
+            stdscr.chgat(i, 0, curses.A_REVERSE | curses.color_pair(4))
+    
+    guide_text = "🔑Press 'C' to copy credentials  |  🚀Press 'Enter' to access a website  |  🏠Press 'ESC' to go back"
+    stdscr.addstr(i + 2, 3, guide_text, curses.color_pair(1) | curses.A_BOLD | curses.A_ITALIC)
 
     stdscr.refresh()
