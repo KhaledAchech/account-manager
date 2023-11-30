@@ -14,6 +14,7 @@ class AccountManager():
 
     def add_new_account(self, credentials: dict, sitename: str, link: str) -> None:
         DBSRC.add_account(agent.encrypt_credentials(credentials), sitename, link)
+        self.accounts = DBSRC.list_accounts()
 
     def list_accounts(self) -> None:
         # decrypt credentials

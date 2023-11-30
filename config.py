@@ -4,7 +4,7 @@ import json
 import configparser
 import base64
 
-from os import system, getcwd, path, makedirs
+from os import system
 from termcolor import cprint
 
 from validation import assert_config

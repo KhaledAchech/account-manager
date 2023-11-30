@@ -42,7 +42,6 @@ def verify() -> bool:
 
 def account_manager() -> None:
     account_banner()
-    # cprint("TO BE CONTINUED ... ☻", THEME.get("warning"))
     account_menu()
 
 
@@ -54,11 +53,11 @@ def account_menu() -> None:
         style=style
     ).execute()
     if actions[action] == 0:
-        # verify()
+        verify()
         add_account()
 
     if actions[action] == 1:
-        # verify()
+        verify()
         get_accounts()
 
     if actions[action] == -1:
@@ -67,20 +66,26 @@ def account_menu() -> None:
             return
 
 def add_account():
-    login = input("Type in the login for this account: ")
-    print("Type in the new account password: ")
+    cprint(MESSAGES.get("account_login_input"), THEME.get("default"))
+    login = input()
+    cprint(MESSAGES.get("account_password_input"), THEME.get("default"))
     password = getpass()
-    sitename = input("Type in the app name for this account: ")
-    link = input("Paste in the link of this app: ")
+    cprint(MESSAGES.get("account_sitename_input"), THEME.get("default"))
+    sitename = input()
+    cprint(MESSAGES.get("account_link_input"), THEME.get("default"))
+    link = input()
     credentials = {
         "login": login,
         "password": password
     }
     AM.add_new_account(credentials, sitename, link)
-    # the same inquirer behaviour for asking for another account to add or going back
+    if inquirer.confirm(message=MESSAGES.get("add_another_account"), default=True).execute():
+        add_account()
+    account_manager()
 
 def get_accounts():
     AM.list_accounts()
+    account_manager()
 
 def temp_email_manager() -> None:
     temp_email_banner()

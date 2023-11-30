@@ -29,6 +29,11 @@
         "security_assistant_welcome_message": "This is your Security Assitant, How can I help you ?",
         "temp_emails_manager_welcome_message": "This is your Email Manager, How can I help you ?",
         "account_manager_welcome_message": "This is your Account Manager, How can I help you ?",
+        "account_login_input": "Type in the login for this account: ",
+        "account_password_input": "Type in the new account password: ",
+        "account_sitename_input": "Type in the app name for this account: ",
+        "account_link_input": "Paste in the link of this app: ",
+        "add_another_account": "Would you like to add an additional account?",
         "create_another_email": "Would you like to create an additional temporairy email?",
         "custom_domain_question": "Do you wish to use a custom domain name?",
         "custom_login_question": "Do you have a login name in mind?",
@@ -38,7 +43,7 @@
         "copied_to_clipboard": "Data is copied to clipboard",
         "enter_mail": "Please Enter the email address: ",
         "refresh_mail_box": "Would you like to refresh your mail box?",
-        "fetch_accounts": "Fetching your accounts: ",
+        "fetch_accounts": "Accounts retrieved successfully!",
         "success": "Successfull Operation!",
         "confirmation": "Confirm?"
     },
@@ -65,11 +70,7 @@
         "domaines": [
           "1secmail.com",
           "1secmail.org",
-          "1secmail.net",
-          "wwjmp.com",
-          "esiix.com",
-          "xojxe.com",
-          "yoggm.com"
+          "1secmail.net"
         ],
         "1sec_url": "https://www.1secmail.com/mailbox"
     }
