@@ -149,6 +149,7 @@ def fetch_mail(mail: str = None) -> None:
     temp_email_manager()
 
 def main_menu() -> None:
+    security_assistant_banner()
     if not verified:
         cprint(MESSAGES.get("unauthorized_access"), THEME.get("error"))
         exit(0)
@@ -180,8 +181,8 @@ def main_menu() -> None:
 
 
 if __name__ == "__main__":
+    system('mode con: cols=200 lines=49')
     init()
-    security_assistant_banner()
     set_file_permissions()
     verified: bool = verify()
     database_connection()
